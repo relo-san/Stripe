@@ -75,7 +75,7 @@ class ObtainTokenForStrongCustomerAuthenticationAction implements ActionInterfac
 
         $getHttpRequest = new GetHttpRequest();
         $this->gateway->execute($getHttpRequest);
-        if ($getHttpRequest->method == 'POST' && isset($getHttpRequest->request['stripeToken'])) {
+        if ($getHttpRequest->method === 'POST' && isset($getHttpRequest->request['stripeToken'])) {
             $model['payment_method'] = $getHttpRequest->request['stripeToken'];
 
             return;
@@ -83,7 +83,7 @@ class ObtainTokenForStrongCustomerAuthenticationAction implements ActionInterfac
 
         $this->gateway->execute($renderTemplate = new RenderTemplate($this->templateName, array(
             'model' => $model,
-            'publishable_key' => $this->keys->getPublishableKey(),
+            'publishable_key' => $this->api->getPublishableKey(),
             'actionUrl' => $request->getToken() ? $request->getToken()->getTargetUrl() : null,
         )));
 

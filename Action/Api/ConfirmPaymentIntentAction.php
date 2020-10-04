@@ -10,7 +10,7 @@ use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Stripe\Keys;
 use Payum\Stripe\Request\Api\ConfirmPaymentIntent;
-use Stripe\Error\Base;
+use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 
@@ -68,8 +68,8 @@ class ConfirmPaymentIntentAction implements ActionInterface, ApiAwareInterface
             $intent = PaymentIntent::retrieve($model['payment_intent']);
             $intent->confirm();
 
-            $model->replace($intent->__toArray(true));
-        } catch (Base $e) {
+            $model->replace($intent->toArray());
+        } catch (ApiErrorException $e) {
             $model->replace($e->getJsonBody());
         }
     }

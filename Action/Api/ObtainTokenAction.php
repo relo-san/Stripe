@@ -75,7 +75,7 @@ class ObtainTokenAction implements ActionInterface, GatewayAwareInterface, ApiAw
 
         $getHttpRequest = new GetHttpRequest();
         $this->gateway->execute($getHttpRequest);
-        if ($getHttpRequest->method == 'POST' && isset($getHttpRequest->request['stripeToken'])) {
+        if ($getHttpRequest->method === 'POST' && isset($getHttpRequest->request['stripeToken'])) {
             $model['card'] = $getHttpRequest->request['stripeToken'];
 
             return;
@@ -83,7 +83,7 @@ class ObtainTokenAction implements ActionInterface, GatewayAwareInterface, ApiAw
 
         $this->gateway->execute($renderTemplate = new RenderTemplate($this->templateName, array(
             'model' => $model,
-            'publishable_key' => $this->keys->getPublishableKey(),
+            'publishable_key' => $this->api->getPublishableKey(),
             'actionUrl' => $request->getToken() ? $request->getToken()->getTargetUrl() : null,
         )));
 

@@ -82,7 +82,7 @@ class RequireConfirmationAction implements ActionInterface, GatewayAwareInterfac
 
         $getHttpRequest = new GetHttpRequest();
         $this->gateway->execute($getHttpRequest);
-        if ($getHttpRequest->method == 'POST' && isset($getHttpRequest->request['stripeToken'])) {
+        if ($getHttpRequest->method === 'POST' && isset($getHttpRequest->request['stripeToken'])) {
             $model['payment_intent'] = $getHttpRequest->request['stripeToken'];
 
             return;
@@ -90,7 +90,7 @@ class RequireConfirmationAction implements ActionInterface, GatewayAwareInterfac
 
         $this->gateway->execute($renderTemplate = new RenderTemplate($this->templateName, array(
             'model' => $model,
-            'publishable_key' => $this->keys->getPublishableKey(),
+            'publishable_key' => $this->api->getPublishableKey(),
             'payment_intent_client_secret' => $model['client_secret'],
         )));
 
